@@ -17,6 +17,10 @@ venv/
 *.ckpt
 output.zip
 
+# Output artifacts (tái sinh từ code) — giữ placeholder
+output/*
+!output/.gitkeep
+
 # Tooling
 .pytest_cache/
 .ruff_cache/
