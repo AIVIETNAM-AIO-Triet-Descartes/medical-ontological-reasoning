@@ -1,0 +1,8 @@
+# Tiện chạy train/infer local. TODO: thêm mount GPU khi cần.
+services:
+  app:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+    # command override khi cần: docker compose run app python scripts/build_kb_index.py

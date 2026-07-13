@@ -1,0 +1,17 @@
+[project]
+name = "medical-ontological-reasoning"
+version = "0.1.0"
+description = "Ontological Reasoning in Medical Knowledge Retrieval — Viettel AI Race 2026, Bài 2"
+requires-python = ">=3.10"
+# deps quản lý qua requirements.txt (pip) — xem file đó
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

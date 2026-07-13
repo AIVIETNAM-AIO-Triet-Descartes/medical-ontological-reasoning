@@ -1,0 +1,22 @@
+# Core deps — pin versions khi chốt môi trường (TODO)
+# NLP / model
+transformers
+torch
+sentencepiece
+accelerate
+peft                 # LoRA cho Qwen2.5-7B (nếu chọn hướng LLM)
+
+# Entity linking
+rapidfuzz            # fuzzy match cascade
+faiss-cpu            # ANN index cho embedding retrieval (SapBERT)
+# sapbert dùng qua transformers (cambridgeltl/SapBERT-*)
+
+# Data / util
+pandas
+numpy
+pyyaml
+tqdm
+jiwer               # WER metric (đối chiếu công thức BTC)
+
+# Test
+pytest

@@ -1,0 +1,23 @@
+# Data + docs giữ local (theo cấu hình sẵn có)
+data/
+docs/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Models / artifacts lớn
+*.bin
+*.safetensors
+*.pt
+*.ckpt
+output.zip
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/

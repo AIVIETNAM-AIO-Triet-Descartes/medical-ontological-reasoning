@@ -1,0 +1,22 @@
+# Hyperparams + model names + ngưỡng cascade. Giá trị placeholder — chốt sau.
+
+ner:
+  strategy: rule_based        # rule_based | encoder_bio | llm
+  encoder_model: null         # TODO: xlm-roberta-base | vinai/phobert-base
+  llm_model: null             # TODO: Qwen/Qwen2.5-7B-Instruct (<=9B, self-host)
+
+linking:
+  fuzzy_threshold: 0.0        # TODO: ngưỡng rapidfuzz
+  embedding_model: null       # TODO: cambridgeltl/SapBERT-from-PubMedBERT-fulltext
+  top_k: 5
+  rxnorm_level: SCD           # Semantic Clinical Drug (giả thuyết từ research)
+
+assertion:
+  strategy: rules             # rules | classifier
+  # trigger phrases nạp trong src/assertion/rules.py
+
+metric:
+  weights:
+    text: 0.3
+    assertions: 0.3
+    candidates: 0.4

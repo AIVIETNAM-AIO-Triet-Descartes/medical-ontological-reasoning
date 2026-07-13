@@ -1,0 +1,11 @@
+# Đường dẫn data / KB / output.
+
+input_dir: data/input
+output_dir: output
+
+kb:
+  icd10_dir: data/kb/icd10
+  rxnorm_dir: data/kb/rxnorm
+
+processed_dir: data/processed
+synthetic_dir: data/synthetic
