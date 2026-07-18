@@ -1,0 +1,28 @@
+# Cấu hình nguồn KB — cho phép swap prescribe <-> full không sửa code.
+# build_kb.py --source {prescribe,full} chọn nhánh RxNorm tương ứng.
+
+sources:
+  prescribe:
+    # RxNorm Current Prescribable Content (NLM, không cần license)
+    rxnorm_rrf: "data/kb/rxnorm/rrf_prescribe/RXNCONSO.RRF"
+  full:
+    # RxNorm Full release mới nhất (07/06/2026) — giải nén vào data/kb/rxnorm_full/.
+    rxnorm_rrf: "data/kb/rxnorm_full/rrf/RXNCONSO.RRF"
+
+# ── ICD-10 ────────────────────────────────────────────────────────────────────
+# PRIMARY: bản Việt (Thông tư Bộ Y tế, dongnaicdc.vn) — có TÊN BỆNH tiếng Việt
+# => linking CHẨN_ĐOÁN thành VN↔VN (xem docs/baseline-implementation.md §0.1).
+icd10_vn_xlsx: "data/kb/icd10/Phu luc Bang danh muc ICD10_FINAL .xlsx"
+icd10_vn_sheet: "Bảng mã ICD10"
+
+# FALLBACK: ICD-10-CM order file (CMS, tiếng Anh). Giữ pluggable, dùng nếu VN thiếu mã.
+icd10_order: "data/kb/icd10/Code Descriptions/icd10cm_order_2027.txt"
+
+# Đầu ra parquet (KB đã parse).
+out:
+  rxnorm: "data/kb/rxnorm.parquet"
+  icd10_vn: "data/kb/icd10_vn.parquet"   # PRIMARY
+  icd10cm: "data/kb/icd10cm.parquet"     # fallback EN
+
+# Chỉ giữ SAB này khi parse RxNorm (license: chỉ lớp RXNORM là public domain).
+rxnorm_keep_sab: "RXNORM"

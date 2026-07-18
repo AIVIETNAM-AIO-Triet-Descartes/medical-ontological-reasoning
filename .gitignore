@@ -21,6 +21,9 @@ output.zip
 output/*
 !output/.gitkeep
 
+# Runs (kết quả pipeline theo lần chạy) — tái sinh từ code
+runs/
+
 # Tooling
 .pytest_cache/
 .ruff_cache/

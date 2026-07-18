@@ -1,10 +1,11 @@
 # Core deps — pin versions khi chốt môi trường (TODO)
 # NLP / model
-transformers
+transformers         # NOTE: gliner ghim transformers<=5.6.x (bị hạ từ 5.13)
 torch
 sentencepiece
 accelerate
 peft                 # LoRA cho Qwen2.5-7B (nếu chọn hướng LLM)
+gliner               # baseline NER zero-shot (Module 1)
 
 # Entity linking
 rapidfuzz            # fuzzy match cascade
@@ -13,6 +14,8 @@ faiss-cpu            # ANN index cho embedding retrieval (SapBERT)
 
 # Data / util
 pandas
+pyarrow            # đọc/ghi KB parquet
+openpyxl           # đọc KB ICD-10 VN (.xlsx)
 numpy
 pyyaml
 tqdm
