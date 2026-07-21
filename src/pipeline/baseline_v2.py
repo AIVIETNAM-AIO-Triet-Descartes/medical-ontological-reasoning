@@ -9,6 +9,7 @@ Chạy: python -m src.pipeline.baseline_v2 --input data/input --out runs/baselin
 from __future__ import annotations
 
 import argparse
+import sys
 from pathlib import Path
 
 from src.assertion.context_rules import detect as detect_assertions
@@ -25,7 +26,7 @@ from src.utils.io import read_document, write_concepts_file
 _CAND_K = {ConceptType.THUOC: 1, ConceptType.CHAN_DOAN: 2}
 
 
-def process_document(text: str, ner_threshold: float = 0.3) -> list[Concept]:
+def process_document(text: str, ner_threshold: float = 0.2) -> list[Concept]:
     concepts = ner_extract(text, threshold=ner_threshold)
     for c in concepts:
         if c.type in TYPES_WITH_ASSERTIONS:
@@ -42,10 +43,15 @@ def _sample_key(p: Path):
 
 
 def main() -> None:
+    # Fix Windows console encoding (cp1252 không hỗ trợ tiếng Việt)
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    if hasattr(sys.stderr, 'reconfigure'):
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
     ap = argparse.ArgumentParser(description="Baseline v2 pipeline runner.")
     ap.add_argument("--input", default="data/input")
     ap.add_argument("--out", default="runs/baseline_v2")
-    ap.add_argument("--threshold", type=float, default=0.3)
+    ap.add_argument("--threshold", type=float, default=0.2)
     ap.add_argument("--limit", type=int, default=0, help="Chỉ chạy N file đầu (0 = tất cả).")
     args = ap.parse_args()
 

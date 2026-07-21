@@ -13,13 +13,15 @@ from functools import lru_cache
 
 from src.schema import Concept, ConceptType
 
-# nhãn GLiNER = mô tả tiếng Việt (zero-shot nhạy với cách diễn đạt) -> ConceptType
+# nhãn GLiNER = prompt tiếng Việt NGẮN (zero-shot nhạy với cách diễn đạt) -> ConceptType.
+# Tuned trên dev/gold (20 file): prompt ngắn "bệnh"/"xét nghiệm" + thr 0.2 cho relaxed
+# recall 0.74 (vs 0.43 với prompt dài). KẾT_QUẢ vẫn ~0 (GLiNER không tag số trần → cần regex).
 _LABELS: dict[str, ConceptType] = {
-    "triệu chứng bệnh nhân": ConceptType.TRIEU_CHUNG,
-    "tên xét nghiệm y khoa": ConceptType.TEN_XET_NGHIEM,
-    "kết quả giá trị xét nghiệm": ConceptType.KET_QUA_XET_NGHIEM,
-    "chẩn đoán bệnh của bác sĩ": ConceptType.CHAN_DOAN,
-    "tên thuốc điều trị": ConceptType.THUOC,
+    "triệu chứng": ConceptType.TRIEU_CHUNG,
+    "xét nghiệm": ConceptType.TEN_XET_NGHIEM,
+    "chỉ số kết quả xét nghiệm": ConceptType.KET_QUA_XET_NGHIEM,
+    "bệnh": ConceptType.CHAN_DOAN,
+    "thuốc": ConceptType.THUOC,
 }
 _LABEL_LIST = list(_LABELS.keys())
 _MODEL_NAME = "urchade/gliner_multi-v2.1"
@@ -69,7 +71,7 @@ def _resolve_overlaps(spans: list[tuple[int, int, ConceptType, float]]):
     return sorted(kept, key=lambda s: (s[0], s[1]))
 
 
-def extract(text: str, threshold: float = 0.3) -> list[Concept]:
+def extract(text: str, threshold: float = 0.2) -> list[Concept]:
     model = _model()
     chunks = _chunks(text)
     spans: list[tuple[int, int, ConceptType, float]] = []
