@@ -14,7 +14,7 @@ from pathlib import Path
 
 from src.assertion.context_rules import detect as detect_assertions
 from src.linking import link
-from src.ner.gliner_extractor import extract as ner_extract
+from src.ner.hybrid import extract as ner_extract
 from src.schema import (
     TYPES_WITH_ASSERTIONS,
     TYPES_WITH_CANDIDATES,

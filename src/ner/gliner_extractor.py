@@ -25,6 +25,29 @@ _LABELS: dict[str, ConceptType] = {
 }
 _LABEL_LIST = list(_LABELS.keys())
 _MODEL_NAME = "urchade/gliner_multi-v2.1"
+
+# Nới span THUỐC sang phải: GLiNER bắt đúng tên nhưng cắt đuôi liều+đường+tần suất.
+# Chỉ dùng [ \t] (KHÔNG \n) để không nuốt lấn sang thuốc ở dòng kế trong med-list.
+_SP = r"[ \t]+"
+_DOSE_TAIL = re.compile(
+    rf"(?:{_SP}?\d+(?:[.,]\d+)?(?:-\d+(?:[.,]\d+)?)?{_SP}?"
+    r"(?:mg/ml|mcg/ml|meq/ml|mg|mcg|meq|units?|iu|ml|gram|g|%|cc))?"     # liều (optional)
+    rf"(?:{_SP}(?:ml|cc|tab|viên))?"                                     # đơn vị thể tích trần
+    rf"(?:{_SP}(?:po|iv|im|sc|sq|sl|pr|inhaled|nebulizer|nebs?|oral|susp\w*|topical|gtt))*"  # đường
+    rf"(?:{_SP}(?:daily|bid|tid|qid|qhs|qam|qpm|qd|qod|q\d+h|q\d+hr|prn|once|weekly|nightly)(?::\w+)?)*",  # tần suất
+    re.I,
+)
+
+
+def _expand_drug(text: str, end: int) -> int:
+    """Nới `end` của span THUỐC để nuốt trọn đuôi liều/đường/tần suất. Offset gốc -> hợp lệ."""
+    m = _DOSE_TAIL.match(text, end)
+    if not m or m.end() <= end:
+        return end
+    e = m.end()
+    while e > end and text[e - 1] in " \t\r\n":   # cắt khoảng trắng cuối
+        e -= 1
+    return e
 _WS = " \t\r\n "
 
 
@@ -83,6 +106,8 @@ def extract(text: str, threshold: float = 0.2) -> list[Concept]:
             s, en = _trim(text, base + e["start"], base + e["end"])
             if en - s < 2:
                 continue
+            if ctype is ConceptType.THUOC:        # nới đuôi liều/đường/tần suất
+                en = _expand_drug(text, en)
             spans.append((s, en, ctype, float(e["score"])))
 
     concepts: list[Concept] = []

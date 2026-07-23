@@ -6,6 +6,8 @@ sentencepiece
 accelerate
 peft                 # LoRA cho Qwen2.5-7B (nếu chọn hướng LLM)
 gliner               # baseline NER zero-shot (Module 1)
+sentence-transformers # embedding ICD (bkai vietnamese-bi-encoder)
+pyvi                 # word-segment tiếng Việt (bắt buộc cho PhoBERT/bkai)
 
 # Entity linking
 rapidfuzz            # fuzzy match cascade
